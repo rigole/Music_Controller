@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import HomePage from "./HomePage";
+import RoomJoinPage from "./RoomJoinPage";
+import CreateRoomPage from "./CreateRoomPage";
 
 
 export default class App extends Component {
@@ -8,7 +11,14 @@ export default class App extends Component {
     }
 
     render() {
-        return <div>New Test Website 2</div>
+        return (
+            <div>
+                 <HomePage />
+                <CreateRoomPage/>
+                <RoomJoinPage/>
+            </div>
+
+        )
 
     }
 }
