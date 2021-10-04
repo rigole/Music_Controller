@@ -16,6 +16,7 @@ export default class HomePage extends Component {
         this.state = {
             roomCode: null,
         }
+        this.clearRoomCode = this.clearRoomCode.bind(this)
     }
 
     async componentDidMount(){
@@ -53,7 +54,7 @@ export default class HomePage extends Component {
 
     clearRoomCode() {
         this.setState({
-
+            roomCode: null,
         })
     }
 
