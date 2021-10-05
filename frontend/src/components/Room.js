@@ -9,14 +9,16 @@ export default class Room extends Component{
             votesToSkip: 2,
             guestCanPause: false,
             isHost: false,
+            showSetting: false,
          }
          this.roomCode = this.props.match.params.roomCode;
          this.getRoomDetails()
-        this.leaveButtonPressed = this.leaveButtonPressed.bind(this)
+         this.leaveButtonPressed = this.leaveButtonPressed.bind(this)
+        this.updateShowSettings  = this.updateShowSettings.bind(this)
     }
 
     getRoomDetails() {
-        fetch('/ api/get-room' + '?code=' + this.roomCode)
+        fetch('/api/get-room' + '?code=' + this.roomCode)
             .then((response) =>{
                 if (!response.ok){
                     this.props.leaveRoomCallback()
@@ -42,6 +44,22 @@ export default class Room extends Component{
         })
     }
 
+    updateShowSettings(value) {
+        this.setState({
+            showSettings: value,
+        })
+    }
+
+    renderSettingsButton() {
+        return(
+            <Grid item xs={12} align="center">
+                <Button variant="contained" color="primary" onClick={() => this.updateShowSettings(true)}>
+                    Settings
+                </Button>
+            </Grid>
+        )
+    }
+
     render() {
         return (
                   <Grid container spacing={1}>
@@ -65,6 +83,9 @@ export default class Room extends Component{
                             Host: {this.state.isHost.toString()}
                            </Typography>
                        </Grid>
+
+                      {this.state.isHost ? this.renderSettingsButton() : null}
+
                       <Grid item xs={12} align="center">
                            <Button variant="contained" color="secondary" to="/" onClick={this.leaveButtonPressed}>
                                Leave Room
