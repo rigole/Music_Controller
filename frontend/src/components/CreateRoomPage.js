@@ -28,11 +28,14 @@ export default class CreateRoomPage extends Component {
         this.state ={
             guestCanPause: this.props.guestCanPause,
             votesToSkip: this.props.votesToSkip,
+            errorMsg: "",
+            successMsg: "",
         };
 
         this.handleRoomButtonPressed = this.handleRoomButtonPressed.bind(this)
         this.handleVotesChange = this.handleVotesChange.bind(this)
         this.handleGuestCanPauseChange = this.handleGuestCanPauseChange.bind(this)
+        this.handleUpdateButtonPressed = this.handleUpdateButtonPressed.bind(this)
     }
 
     handleVotesChange(e) {
@@ -84,13 +87,38 @@ export default class CreateRoomPage extends Component {
         )
     }
 
+    handleUpdateButtonPressed(){
+            const requestOptions = {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({
+                votes_to_skip: this.state.votesToSkip,
+                guest_can_pause: this.state.guestCanPause,
+                code: this.props.roomCode
+            }),
+        }
+        fetch("/api/update-room", requestOptions)
+            .then((response) => {
+                if (response.ok){
+                    this.setState({
+                        successMsg : "Room Updated successfully!"
+                    })
+
+                } else {
+                    this.setState({
+                         errorMsg : "Error Updating room"
+                    })
+                }
+            })
+
+    }
     renderUpdateButtons() {
         return (
                 <Grid item xs={12} align="center">
                         <Button
                             color="primary"
                             variant="contained"
-                            onClick={this.handleRoomButtonPressed}
+                            onClick={this.handleUpdateButtonPressed}
                         >
                            Update Room
                         </Button>
