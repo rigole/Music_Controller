@@ -61,15 +61,52 @@ export default class CreateRoomPage extends Component {
             .then((data) => this.props.history.push('/room/' + data.code))
     }
 
+
+    renderCreateButtons(){
+        return (
+            <Grid container spacing={1}>
+                  <Grid item xs={12} align="center">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={this.handleRoomButtonPressed}
+                        >
+                           Create Room
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} align="center">
+                        <Button color="secondary" variant="contained" to="/" component={Link}>
+                            Back
+                        </Button>
+                    </Grid>
+
+            </Grid>
+        )
+    }
+
+    renderUpdateButtons() {
+        return (
+                <Grid item xs={12} align="center">
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={this.handleRoomButtonPressed}
+                        >
+                           Update Room
+                        </Button>
+                </Grid>
+        )
+    }
+
     render() {
 
         const title = this.props.update ? "Update Room" : "Create a Room"
 
         return (
             <Grid container spacing={1}>
-                <Grid item xs={12} align="center">
+                    <Grid item xs={12} align="center">
                         <Typography component="h4" variant="h4">
-                            Create A Room
+                            {title}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} align="center">
@@ -93,8 +130,7 @@ export default class CreateRoomPage extends Component {
                                 />
                             </RadioGroup>
                         </FormControl>
-
-                </Grid>
+                     </Grid>
                     <Grid item xs={12} align="center">
                         <FormControl>
                             <TextField
@@ -111,22 +147,12 @@ export default class CreateRoomPage extends Component {
                                 <div align="center">Votes Required to Skip Song</div>
                             </FormHelperText>
                         </FormControl>
-                </Grid>
-                  <Grid item xs={12} align="center">
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={this.handleRoomButtonPressed}
-                    >
-                       Create Room
-                    </Button>
-                </Grid>
-                <Grid item xs={12} align="center">
-                    <Button color="secondary" variant="contained" to="/" component={Link}>
-                        Back
-                    </Button>
-                </Grid>
+                    </Grid>
+                {
+                    this.props.update ? this.renderUpdateButtons() : this.renderCreateButtons()
+                }
             </Grid>
+
         )
 
     }
