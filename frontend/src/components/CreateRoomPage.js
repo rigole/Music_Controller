@@ -9,9 +9,7 @@ import { Link } from "react-router-dom";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
-
-
+import { Collapse } from "@material-ui/core";
 
 
 export default class CreateRoomPage extends Component {
@@ -94,7 +92,7 @@ export default class CreateRoomPage extends Component {
             body: JSON.stringify({
                 votes_to_skip: this.state.votesToSkip,
                 guest_can_pause: this.state.guestCanPause,
-                code: this.props.roomCode
+                code: this.props.roomCode,
             }),
         }
         fetch("/api/update-room", requestOptions)
@@ -109,6 +107,7 @@ export default class CreateRoomPage extends Component {
                          errorMsg : "Error Updating room"
                     })
                 }
+                this.props.updateCallback()
             })
 
     }
@@ -132,6 +131,11 @@ export default class CreateRoomPage extends Component {
 
         return (
             <Grid container spacing={1}>
+                <Grid item xs={12} align="center">
+                       <Collapse in={this.state.errorMsg !== "" || this.state.successMsg !== ""}>
+                           {this.state.successMsg}
+                       </Collapse>
+                    </Grid>
                     <Grid item xs={12} align="center">
                         <Typography component="h4" variant="h4">
                             {title}
