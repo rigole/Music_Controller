@@ -13,11 +13,13 @@ export default class Room extends Component{
             showSetting: false,
          }
          this.roomCode = this.props.match.params.roomCode;
-         this.getRoomDetails()
+
          this.leaveButtonPressed = this.leaveButtonPressed.bind(this)
-        this.updateShowSettings  = this.updateShowSettings.bind(this)
-        this.renderSettingsButton = this.renderSettingsButton.bind(this)
-        this.renderSettings = this.renderSettings.bind(this)
+         this.updateShowSettings  = this.updateShowSettings.bind(this)
+         this.renderSettingsButton = this.renderSettingsButton.bind(this)
+         this.renderSettings = this.renderSettings.bind(this)
+        this.getRoomDetails = this.getRoomDetails.bind(this)
+        this.getRoomDetails()
     }
 
     getRoomDetails() {
@@ -42,7 +44,8 @@ export default class Room extends Component{
             method: "POST",
             headers: { "Content-Type": "application/json" },
         }
-        fetch("/api/leave-room", requestOptions).then((_reponse) => {
+        fetch("/api/leave-room", requestOptions).then((_response) => {
+            this.props.leaveRoomCallback()
             this.props.history.push("/")
         })
     }
@@ -62,7 +65,7 @@ export default class Room extends Component{
                     votesToSkip={this.state.votesToSkip}
                     guestCanPause={this.state.guestCanPause}
                     roomCode={this.roomCode}
-                    updateCallback={() => {}}/>
+                    updateCallback={this.getRoomDetails}/>
             </Grid>
             <Grid item xs={12} align="center">
                 <Button
@@ -121,7 +124,10 @@ export default class Room extends Component{
                       {this.state.isHost ? this.renderSettingsButton() : null}
 
                       <Grid item xs={12} align="center">
-                           <Button variant="contained" color="secondary" to="/" onClick={this.leaveButtonPressed}>
+                           <Button variant="contained"
+                                   color="secondary"
+                                   to="/"
+                                   onClick={this.leaveButtonPressed}>
                                Leave Room
                            </Button>
                        </Grid>

@@ -18,7 +18,7 @@ export default class CreateRoomPage extends Component {
         guestCanPause: true,
         update: false,
         roomCode: null,
-        updateCallback: () => {}
+        updateCallback: () => {},
     }
 
     constructor(props) {
@@ -59,7 +59,7 @@ export default class CreateRoomPage extends Component {
         }
         fetch("/api/create-room", requestOptions)
             .then((response) => response.json())
-            .then((data) => this.props.history.push('/room/' + data.code))
+            .then((data) => this.props.history.push("/room/" + data.code))
     }
 
 
@@ -107,7 +107,7 @@ export default class CreateRoomPage extends Component {
                          errorMsg : "Error Updating room"
                     })
                 }
-                this.props.updateCallback()
+                this.updateCallback()
             })
 
     }
@@ -146,7 +146,10 @@ export default class CreateRoomPage extends Component {
                             <FormHelperText>
                                 <div align="center">Guest Control of Playback State</div>
                             </FormHelperText>
-                            <RadioGroup row defaultValue="true" onChange={this.handleGuestCanPauseChange}>
+                            <RadioGroup
+                                row
+                                defaultValue={this.props.guestCanPause.toString()}
+                                onChange={this.handleGuestCanPauseChange}>
                                 <FormControlLabel
                                     value="true"
                                     control={<Radio color="primary"/>}
