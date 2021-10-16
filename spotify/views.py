@@ -2,11 +2,35 @@ from django.shortcuts import render
 from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
 from rest_framework.views import APIView
 from requests import Request, post
+from rest_framework import status
+from rest_framework.response import Response
+
+
+# Create your views here.
 
 class AuthURL(APIView):
     def get(self, request, format=None):
         scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
 
+        url = Request('GET', 'https://accounts.spotify.com/authorize', params={
+            'scope': scopes,
+            'response_type': 'code',
+            'redirect_uri': REDIRECT_URI,
+            'client_id': CLIENT_ID
+        }).prepare().url
+
+        return Response({'url': url}, status=status.HTTP_200_OK)
 
 
-# Create your views here.
+def spotify_callback(request, format=None):
+    code = request.GET.get('code')
+    error = request.GET.get('error')
+
+    response = post('https://accounts.spotify.com/api/token', data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': REDIRECT_URI,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET
+
+    })
